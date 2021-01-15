@@ -184,7 +184,7 @@ let TestResults = create({
       <div className="results">
         <ConnectionErrors json={this.props.json.ConnectionErrors}/>
         <ConnectionReports json={this.props.json.ConnectionReports}/>
-        <DNSResult json={this.props.json.DNSResult}/>
+        <DNSResult json={this.props.json.DNSResult} wellknown={this.props.json.WellKnownResult}/>
         <API/>
       </div>
     );
@@ -404,6 +404,16 @@ let DNSResult = create({
 
   render: function() {
     let j = this.props.json;
+		let wellknown = this.props.wellknown;
+
+		if (wellknown["m.server"].includes(":")) {
+			return (
+				<div className="dns">
+					<h2>.well-known information found -> SRV record-check skipped</h2>
+				</div>
+			);
+		}
+
     if (j.SRVRecords == null) {
       return (
         <div className="dns">
